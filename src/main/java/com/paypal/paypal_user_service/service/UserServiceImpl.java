@@ -34,8 +34,10 @@ public class UserServiceImpl implements IUserService{
             try{
 
                 user.setUserId(userId);
+
                 save  = userRepository.saveAndFlush(user);
                 log.info("user is created");
+                break;
             }catch (DataIntegrityViolationException ex){
                 log.warn("duplicate userId : "+userId+", found while creating user, trying to create new userId : "+ex.getMessage());
                 userId = ShortIdGenerator.generateId();

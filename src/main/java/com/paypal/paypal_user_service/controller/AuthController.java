@@ -52,7 +52,9 @@ public class AuthController {
                 .build();
 
         for(CountryCurrency c : CountryCurrency.values()){
-            if(signupRequest.getCountryName().equals(c.getCountryName())){
+            String countryName = c.getCountryName();
+            System.out.println(countryName);
+            if(signupRequest.getCountryName().equalsIgnoreCase(countryName)){
                 user.setCountryCurrency(c);
                 break;
             }
@@ -66,7 +68,7 @@ public class AuthController {
         try{
             CreateWalletRequest request = new CreateWalletRequest();
             request.setUserId(savedUser.getUserId());
-            request.setCurrency("Dol");
+            request.setCurrency(savedUser.getCountryCurrency().getCurrencyCode());
             WalletResponse wallet = walletClient.createWallet(request);
             log.info("wallet is created");
             return ResponseEntity.ok("User registered successfully");
