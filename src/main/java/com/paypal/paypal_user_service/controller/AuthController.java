@@ -50,14 +50,19 @@ public class AuthController {
                 .password(passwordEncoder.encode(signupRequest.getPassword()))
                 .role("user")
                 .build();
-
+        boolean flag = false;
         for(CountryCurrency c : CountryCurrency.values()){
             String countryName = c.getCountryName();
             System.out.println(countryName);
             if(signupRequest.getCountryName().equalsIgnoreCase(countryName)){
                 user.setCountryCurrency(c);
+                flag = true;
                 break;
             }
+        }
+        if(!flag){
+            return ResponseEntity.badRequest().body("Unsupported country: " + signupRequest.getCountryName());
+           // throw new IllegalArgumentException("Unsupported country: " + signupRequest.getCountryName());
         }
 
 
