@@ -17,7 +17,7 @@ public class SecurityConfig {
 
     private JWTrequestFilter jwTrequestFilter;
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(csrf->csrf.disable())
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
@@ -25,11 +25,12 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/paypal/api/v1/users/**")
-                        .permitAll()
+                        //.requestMatchers("/paypal/api/v1/users1/**")
+                        //.permitAll()
                         .requestMatchers(
-                                "/paypal/api/auth/v1/**")
+                                "/paypal/api/auth/v1/login","/paypal/api/auth/v1/signup")
                         .permitAll()
+                        .requestMatchers("/paypal/api/auth/**").authenticated()
                         .anyRequest().authenticated()
                 ).addFilterBefore(jwTrequestFilter,
                         UsernamePasswordAuthenticationFilter.class)
