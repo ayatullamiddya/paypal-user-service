@@ -69,17 +69,20 @@ public class AuthController {
 
         //userController.createUser(user);
         //User savedUser = userRepository.save(user);
-        User savedUser = userService.createUser(user);
+        User savedUser = null;
         try{
-            CreateWalletRequest request = new CreateWalletRequest();
+            savedUser = userService.createUser(user);
+            /*CreateWalletRequest request = new CreateWalletRequest();
             request.setUserId(savedUser.getUserId());
             request.setCurrency(savedUser.getCountryCurrency().getCurrencyCode());
             WalletResponse wallet = walletClient.createWallet(request);
-            log.info("wallet is created");
-            return ResponseEntity.ok("User registered successfully");
+            log.info("wallet is created");*/
+
+            return ResponseEntity.ok("User registered successfully : id : "+savedUser.getUserId());
         }catch (Exception e){
             log.error("while creating wallet, error occured: "+e.getMessage());
-            userRepository.deleteById(savedUser.getId());
+            if(savedUser != null)
+                userRepository.deleteById(savedUser.getId());
             return ResponseEntity.badRequest().body("user not created, some technical issue, sorry for inconvenience");
         }
 

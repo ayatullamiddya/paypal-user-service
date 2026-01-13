@@ -50,11 +50,12 @@ public class UserServiceImpl implements IUserService{
         try{
             CreateWalletRequest request = new CreateWalletRequest();
             request.setUserId(userId);
-            request.setCurrency("Dol");
+            request.setCurrency(save.getCountryCurrency().getCurrencyCode());
             WalletResponse wallet = walletClient.createWallet(request);
             log.info("wallet is created");
         }catch (Exception e){
             log.error("while creating wallet, error occured: "+e.getMessage());
+           // WalletResponse wallet = walletClient.deleteWallet();
         }
         return save;
     }
