@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: paypal
+    ports:
+      - "3306:3306"
+    networks:
+      - paypal-net
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  paypal-user-service:
+    image: paypal-user-service:1.0
+    container_name: paypal-user-service
+    restart: always
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/paypal
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8079:8080"
+    networks:
+      - paypal-net
+
+networks:
+  paypal-net:
+
+volumes:
+  mysql-data:
