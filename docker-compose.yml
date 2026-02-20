@@ -1,5 +1,3 @@
-
-
 services:
 
   mysql-db:
@@ -15,13 +13,19 @@ services:
       - paypal-net
     volumes:
       - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   paypal-user-service:
     image: paypal-user-service:${IMAGE_TAG}
     container_name: paypal-user-service
     restart: always
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/paypal
       SPRING_DATASOURCE_USERNAME: root
