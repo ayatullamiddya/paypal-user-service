@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
 
@@ -10,14 +10,14 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: paypal
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - paypal-net
     volumes:
       - mysql-data:/var/lib/mysql
 
   paypal-user-service:
-    image: paypal-user-service:1.0
+    image: paypal-user-service:14
     container_name: paypal-user-service
     restart: always
     depends_on:
