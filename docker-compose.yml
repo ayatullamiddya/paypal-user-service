@@ -17,7 +17,7 @@ services:
       - mysql-data:/var/lib/mysql
 
   paypal-user-service:
-    image: paypal-user-service:14
+    image: paypal-user-service:${IMAGE_TAG}
     container_name: paypal-user-service
     restart: always
     depends_on:
