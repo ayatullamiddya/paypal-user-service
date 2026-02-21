@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
 
-    private IUserService userService;
+    private final IUserService userService;
     @GetMapping("/")
     public String sayHello(){
         return "HELLO";
